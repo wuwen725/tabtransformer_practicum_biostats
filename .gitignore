@@ -1,0 +1,15 @@
+# Raw GEO data
+data/raw/
+*.gz
+*.txt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large model files
+*.pt
+*.pth
