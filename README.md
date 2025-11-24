@@ -46,7 +46,7 @@ tabtransformer\_practicum\_biostats/
 
 │ ├── GSE95640/ # processed master dataframe uploaded
 
-│ └── GSE240671/
+│ └── GSE240671/ # processed master dataframe uploaded
 
 │
 
@@ -62,7 +62,11 @@ tabtransformer\_practicum\_biostats/
 
 │ │ ├── 01\_preprocessing\_and\_eda\_GSE95640.ipynb
 
+│ │ └── 02\_model\_training\_and\_evaluation\_GSE95640.ipynb
+
 │ └── GSE240671/
+
+│ │ ├── 01\_preprocessing\_and\_eda\_GSE240671.ipynb
 
 │
 
@@ -76,9 +80,13 @@ tabtransformer\_practicum\_biostats/
 
 │ ├── GSE95640/
 
-│ │ └── figures/ # PCA, volcano plots
+│ │ ├── figures/ # AUC curves, PCA, volcano plots, etc.
+
+│ │ └── tables/ # model performance summaries \& DEG tables
 
 │ └── GSE240671/
+
+│ │ ├── figures/ # PCA, volcano plots, etc.
 
 │
 
