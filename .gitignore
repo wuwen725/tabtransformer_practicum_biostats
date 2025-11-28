@@ -1,15 +1,16 @@
-# Raw GEO data
-data/raw/
-*.gz
-*.txt
-
-# Python cache
+# Ignore Python cache
 __pycache__/
 *.pyc
 
-# Jupyter
+# Ignore Jupyter auto checkpoint
 .ipynb_checkpoints/
 
-# Large model files
+# Ignore large model weights
 *.pt
 *.pth
+
+# Ignore compressed downloads (but NOT raw txt/tsv)
+*.gz
+*.zip
+*.tar
+*.tar.gz
