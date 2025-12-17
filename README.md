@@ -32,12 +32,11 @@ The entire project is designed to be **fully transparent, modular, and reproduci
 ---
 
 ## Project Structure
-
+'''
 tabtransformer_practicum_biostats/
-│
 ├── data/
 │ ├── GSE164641/
-│ │ ├── raw/ # (optional, if included)
+│ │ ├── raw/ # optional raw GEO files
 │ │ └── processed/ # master_data.csv, metadata.csv, DESeq outputs
 │ ├── GSE95640/
 │ └── GSE240671/
@@ -51,7 +50,7 @@ tabtransformer_practicum_biostats/
 │
 ├── output/
 │ ├── GSE164641/
-│ │ ├── figures/ # PCA, volcano plot, ROC curves, etc.
+│ │ ├── figures/ # PCA, volcano plots, ROC curves, etc.
 │ │ └── tables/ # AUC summary, metric tables, DEG tables
 │ ├── GSE95640/
 │ └── GSE240671/
@@ -63,8 +62,7 @@ tabtransformer_practicum_biostats/
 ├── train_utils.py # training loops for CV
 ├── evaluation_utils.py # metrics, ROC, AUC, CIs
 └── plot_utils.py # visualization utilities
-
-
+'''
 ---
 
 ## Datasets Used
