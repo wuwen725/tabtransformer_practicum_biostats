@@ -26,7 +26,7 @@ The entire project is designed to be **fully transparent, modular, and reproduci
 5. **Compare TabTransformer with classical ML models**:  
    - Logistic Regression  
    - Random Forest  
-   - XGBoost / others (depending on dataset)  
+   - LASSO 
 6. **Generate reproducible modeling workflows** for each dataset.
 
 ---
@@ -45,14 +45,19 @@ tabtransformer_practicum_biostats/
 │   │   │   └── (raw GEO files)
 │   │   └── processed/
 │   │       ├── master_dataframe.csv
-│   │       ├── metadata.csv
 │   │       └── deseq2_results.csv
 │   ├── GSE95640/
 │   │   ├── raw/
+│   │   │   └── (raw GEO files)
 │   │   └── processed/
+│   │       ├── master_dataframe.csv
+│   │       └── deseq2_results.csv
 │   └── GSE240671/
 │       ├── raw/
+│   │   │   └── (raw GEO files)
 │       └── processed/
+│   │       ├── master_dataframe.csv
+│   │       └── deseq2_results.csv
 │
 ├── notebooks/
 │   ├── GSE164641/
@@ -73,14 +78,26 @@ tabtransformer_practicum_biostats/
 │   │   │   └── roc_curves.png
 │   │   └── tables/
 │   │       ├── auc_summary.csv
-│   │       ├── macro_metrics.csv
-│   │       └── deg_table.csv
+│   │       ├── classification report macro.csv
+│   │       └── classification report weighted.csv
 │   ├── GSE95640/
 │   │   ├── figures/
+│   │   │   ├── pca_plot.png
+│   │   │   ├── volcano_plot.png
+│   │   │   └── roc_curves.png
 │   │   └── tables/
+│   │       ├── auc_summary.csv
+│   │       ├── classification report macro.csv
+│   │       └── classification report weighted.csv
 │   └── GSE240671/
-│       ├── figures/
-│       └── tables/
+│   │   ├── figures/
+│   │   │   ├── pca_plot.png
+│   │   │   ├── volcano_plot.png
+│   │   │   └── roc_curves.png
+│   │   └── tables/
+│   │       ├── auc_summary.csv
+│   │       ├── classification report macro.csv
+│   │       └── classification report weighted.csv
 │
 └── src/
     ├── data_utils.py
@@ -100,8 +117,8 @@ All datasets come from the NCBI Gene Expression Omnibus (GEO):
 | Dataset | Samples | Platform | Label Definition |
 |--------|---------|-----------|------------------|
 | **GSE164641** | 187 | RNA-seq | High-risk vs Average-risk |
-| **GSE95640** | 382 | RNA-seq | dataset-specific labels |
-| **GSE240671** | 69 | RNA-seq | dataset-specific labels |
+| **GSE95640** | 382 | RNA-seq | CID1 vs CID2 |
+| **GSE240671** | 69 | RNA-seq | sentinel_lymph_YES vs sentinel_lymph_NO |
 
 Clinical variables differ across datasets (age, BMI, gender, pregnancy history, family cancer history, etc.).  
 These differences allow for evaluating **model generalizability** under feature heterogeneity.
@@ -140,7 +157,7 @@ Used for comparison across datasets:
 
 - Logistic Regression  
 - Random Forest  
-- XGBoost (optional)  
+- LASSO
 
 ### 4. **Evaluation Metrics**
 Each dataset is evaluated under **stratified k-fold CV**, using:
@@ -149,7 +166,6 @@ Each dataset is evaluated under **stratified k-fold CV**, using:
 - Macro-F1  
 - Weighted-F1  
 - Sensitivity / Specificity  
-- Confidence intervals for AUC (bootstrapping)
 
 All result tables and plots appear in `output/`.
 
@@ -163,13 +179,11 @@ Each dataset includes:
 - PCA plot  
 - Volcano plot  
 - ROC curves (per fold + mean curve)  
-- Feature importance charts (if applicable)
 
 ### Tables
 - Mean AUC summary  
 - Fold-by-fold performance  
-- DEG tables  
-- Clinical variable summaries  
+- Classification Report 
 
 These files are automatically saved in:
 
