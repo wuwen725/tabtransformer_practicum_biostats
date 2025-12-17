@@ -1,8 +1,23 @@
-pandas
-numpy
-scikit-learn
-torch
-pydeseq2
-tab-transformer-pytorch
-matplotlib
-seaborn
+# Core data science
+numpy>=1.23
+pandas>=1.5
+scipy>=1.9
+
+# Machine learning
+scikit-learn>=1.2
+
+# Deep learning
+torch>=2.0
+tab-transformer-pytorch>=0.3
+
+# Differential expression analysis
+pydeseq2>=0.4
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.12
+
+# Utilities
+tqdm>=4.64
+joblib>=1.2
+

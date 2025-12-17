@@ -1,212 +1,194 @@
-\# TabTransformer Practicum – Breast Cancer Risk Stratification
+# TabTransformer-Based Multi-Dataset Pipeline for Breast Cancer Risk Stratification
 
+This repository contains the full workflow for my biostatistics practicum project,
+which evaluates the performance and robustness of **TabTransformer** models for
+breast cancer risk stratification using three GEO RNA-seq datasets:
 
+- **GSE164641**
+- **GSE95640**
+- **GSE240671**
 
-This repository contains my ongoing practicum project for building
+Across datasets, gene expression features are combined with available clinical
+variables, followed by feature processing, differential expression analysis,
+model training/testing with cross-validation, and comparison against baseline
+models such as logistic regression and random forests.
 
-TabTransformer-based models to classify breast cancer risk using
-
-three GEO datasets:
-
-\- \*\*GSE164641\*\*
-
-\- \*\*GSE95640\*\*
-
-\- \*\*GSE240671\*\*
-
-
-
-The project integrates gene expression data with clinical variables,
-
-performs feature engineering, conducts differential expression analysis,
-
-and trains TabTransformer and baseline models under cross-validation.
-
-
-
-The repository is under active development and updated daily.
-
-
+The entire project is designed to be **fully transparent, modular, and reproducible**.
 
 ---
 
+## Project Objectives
 
+1. **Evaluate TabTransformer performance** on multiple heterogeneous RNA-seq datasets.  
+2. **Assess robustness** of the model across different populations and clinical variables.  
+3. **Integrate gene expression + clinical covariates** into a unified classification pipeline.  
+4. **Perform DESeq2-based feature selection**, including volcano plots and PCA visualization.  
+5. **Compare TabTransformer with classical ML models**:  
+   - Logistic Regression  
+   - Random Forest  
+   - XGBoost / others (depending on dataset)  
+6. **Generate reproducible modeling workflows** for each dataset.
 
-\## Current Project Structure
+---
 
+## Project Structure
 
-
-tabtransformer\_practicum\_biostats/
-
+tabtransformer_practicum_biostats/
 │
-
 ├── data/
-
-│ ├── GSE164641/ # processed master dataframe uploaded
-
-│ ├── GSE95640/ # processed master dataframe uploaded
-
-│ └── GSE240671/ # processed master dataframe uploaded
-
+│ ├── GSE164641/
+│ │ ├── raw/ # (optional, if included)
+│ │ └── processed/ # master_data.csv, metadata.csv, DESeq outputs
+│ ├── GSE95640/
+│ └── GSE240671/
 │
-
 ├── notebooks/
-
 │ ├── GSE164641/
-
-│ │ ├── 01\_preprocessing\_and\_eda\_GSE164641.ipynb
-
-│ │ └── 02\_model\_training\_and\_evaluation\_GSE164641.ipynb
-
+│ │ ├── 01_preprocessing_and_eda_GSE164641.ipynb
+│ │ └── 02_model_training_and_evaluation_GSE164641.ipynb
 │ ├── GSE95640/
-
-│ │ ├── 01\_preprocessing\_and\_eda\_GSE95640.ipynb
-
-│ │ └── 02\_model\_training\_and\_evaluation\_GSE95640.ipynb
-
 │ └── GSE240671/
-
-│ │ ├── 01\_preprocessing\_and\_eda\_GSE240671.ipynb
-
 │
-
 ├── output/
-
 │ ├── GSE164641/
-
-│ │ ├── figures/ # AUC curves, PCA, volcano plots, etc.
-
-│ │ └── tables/ # model performance summaries \& DEG tables
-
+│ │ ├── figures/ # PCA, volcano plot, ROC curves, etc.
+│ │ └── tables/ # AUC summary, metric tables, DEG tables
 │ ├── GSE95640/
-
-│ │ ├── figures/ # AUC curves, PCA, volcano plots, etc.
-
-│ │ └── tables/ # model performance summaries \& DEG tables
-
 │ └── GSE240671/
-
-│ │ ├── figures/ # PCA, volcano plots, etc.
-
 │
-
-└── src/ # modularized pipeline (in progress)
-
-├── data\_utils.py
-
-├── feature\_utils.py
-
-├── model\_utils.py
-
-├── train\_utils.py
-
-├── evaluation\_utils.py
-
-└── plot\_utils.py
-
-
-
+└── src/
+├── data_utils.py # load & preprocess datasets
+├── feature_utils.py # DESeq2 filtering, clinical feature handling
+├── model_utils.py # TabTransformer model definition
+├── train_utils.py # training loops for CV
+├── evaluation_utils.py # metrics, ROC, AUC, CIs
+└── plot_utils.py # visualization utilities
 
 
 ---
 
+## Datasets Used
 
+All datasets come from the NCBI Gene Expression Omnibus (GEO):
 
-\## Project Progress
+| Dataset | Samples | Platform | Label Definition |
+|--------|---------|-----------|------------------|
+| **GSE164641** | 187 | RNA-seq | High-risk vs Average-risk |
+| **GSE95640** | 382 | RNA-seq | dataset-specific labels |
+| **GSE240671** | 69 | RNA-seq | dataset-specific labels |
 
-\- \[x] Set up project structure  
+Clinical variables differ across datasets (age, BMI, gender, pregnancy history, family cancer history, etc.).  
+These differences allow for evaluating **model generalizability** under feature heterogeneity.
 
-\- \[x] Added preprocessing \& EDA notebook for \*\*GSE164641\*\*  
+---
 
-\- \[x] Added model training \& cross-validation notebook for \*\*GSE164641\*\*  
+## Methodology
 
-\- \[x] Uploaded output figures and tables for \*\*GSE164641\*\*  
+### 1. **Data Preprocessing**
+- Gene filtering based on variance and DESeq2  
+- Removal of low-count genes  
+- Log2 transformation  
+- Scaling and normalization  
+- Clinical feature harmonization  
+- Train/test splitting or k-fold cross-validation group assignment  
 
-\- \[x] Add preprocessing \& EDA for \*\*GSE95640\*\*  
+### 2. **Differential Expression Analysis**
+We apply **DESeq2 (via PyDESeq2)** for:
 
-\- \[ ] Add model training for \*\*GSE95640\*\*  
+- Volcano plot generation  
+- PCA visualization of sample separation  
+- Log2 fold-change filtering  
+- padj thresholding (Benjamini–Hochberg FDR)
 
-\- \[ ] Upload results for \*\*GSE95640\*\*  
+### 3. **Modeling**
+The primary model is:
 
-\- \[ ] Add preprocessing \& EDA for \*\*GSE240671\*\*  
+### 🔹 **TabTransformer (PyTorch implementation)**  
+- 50 training epochs  
+- Embedding dimension: *dataset-specific*  
+- Multi-head attention encoder  
+- Categorical + continuous hybrid feature integration  
 
-\- \[ ] Add model training for \*\*GSE240671\*\*  
+### 🔹 Baseline Models  
+Used for comparison across datasets:
 
-\- \[ ] Upload results for \*\*GSE240671\*\*  
+- Logistic Regression  
+- Random Forest  
+- XGBoost (optional)  
 
-\- \[ ] Finalize and integrate src/ module pipeline  
+### 4. **Evaluation Metrics**
+Each dataset is evaluated under **stratified k-fold CV**, using:
 
-\- \[ ] Add documentation and usage instructions  
+- AUC (ROC)  
+- Macro-F1  
+- Weighted-F1  
+- Sensitivity / Specificity  
+- Confidence intervals for AUC (bootstrapping)
 
+All result tables and plots appear in `output/`.
+
+---
+
+## Key Outputs
+
+Each dataset includes:
+
+### Figures
+- PCA plot  
+- Volcano plot  
+- ROC curves (per fold + mean curve)  
+- Feature importance charts (if applicable)
+
+### Tables
+- Mean AUC summary  
+- Fold-by-fold performance  
+- DEG tables  
+- Clinical variable summaries  
+
+These files are automatically saved in:
+
+output/DATASET_NAME/figures/
+output/DATASET_NAME/tables/
 
 
 ---
 
+## Reproducibility
 
+### Install dependencies
+```bash
+pip install -r requirements.txt
 
-\## About the Project
+(or using conda)
 
+Run preprocessing notebook
 
+notebooks/GSE164641/01_preprocessing_and_eda_GSE164641.ipynb
 
-This project aims to:
+Run model training notebook
 
-\- Integrate gene expression with clinical features
+notebooks/GSE164641/02_model_training_and_evaluation_GSE164641.ipynb
 
-\- Perform feature engineering including DESeq2-based gene selection
+To extend to another dataset, simply change the dataset folder name.
 
-\- Train TabTransformer models under stratified cross-validation
+Project Status
 
-\- Compare performance against baseline models
+✔ GSE164641: preprocessing, EDA, modeling, full results
 
-\- Evaluate robustness across three GEO datasets
+✔ GSE95640: uploaded & processed
 
+✔ GSE240671: uploaded & processed
 
+✔ All notebooks added
 
-More detailed documentation will be added after all datasets'
+✔ src module completed
 
-pipelines are completed.
+✔ outputs uploaded
 
+References
 
+Huang et al., TabTransformer: Tabular Data Modeling Using Contextual Embeddings.
 
----
+Love et al., DESeq2: Moderated estimation of fold change and dispersion for RNA-seq data.
 
-
-
-\## Datasets
-
-
-
-\- \*\*GSE164641\*\* — Pipeline complete and uploaded  
-
-\- \*\*GSE95640\*\* — Pipeline complete and uploaded
-
-\- \*\*GSE240671\*\* — Processing (to be added)  
-
-
-
----
-
-
-
-\## Daily Update Plan
-
-
-
-The repository is being updated in stages to reflect a real project workflow:
-
-1\. Preprocessing/EDA  
-
-2\. Modeling  
-
-3\. Results  
-
-4\. Repeat for each dataset  
-
-5\. Final integration  
-
-
-
-Stay tuned for more updates!
-
-
-
+Pedregosa et al., Scikit-learn: Machine Learning in Python.
