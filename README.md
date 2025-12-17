@@ -32,37 +32,65 @@ The entire project is designed to be **fully transparent, modular, and reproduci
 ---
 
 ## Project Structure
-'''
+
+```
 tabtransformer_practicum_biostats/
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
 ├── data/
-│ ├── GSE164641/
-│ │ ├── raw/ # optional raw GEO files
-│ │ └── processed/ # master_data.csv, metadata.csv, DESeq outputs
-│ ├── GSE95640/
-│ └── GSE240671/
+│   ├── GSE164641/
+│   │   ├── raw/
+│   │   │   └── (raw GEO files)
+│   │   └── processed/
+│   │       ├── master_dataframe.csv
+│   │       ├── metadata.csv
+│   │       └── deseq2_results.csv
+│   ├── GSE95640/
+│   │   ├── raw/
+│   │   └── processed/
+│   └── GSE240671/
+│       ├── raw/
+│       └── processed/
 │
 ├── notebooks/
-│ ├── GSE164641/
-│ │ ├── 01_preprocessing_and_eda_GSE164641.ipynb
-│ │ └── 02_model_training_and_evaluation_GSE164641.ipynb
-│ ├── GSE95640/
-│ └── GSE240671/
+│   ├── GSE164641/
+│   │   ├── 01_preprocessing_and_eda_GSE164641.ipynb
+│   │   └── 02_model_training_and_evaluation_GSE164641.ipynb
+│   ├── GSE95640/
+│   │   ├── 01_preprocessing_and_eda_GSE95640.ipynb
+│   │   └── 02_model_training_and_evaluation_GSE95640.ipynb
+│   └── GSE240671/
+│       ├── 01_preprocessing_and_eda_GSE240671.ipynb
+│       └── 02_model_training_and_evaluation_GSE240671.ipynb
 │
 ├── output/
-│ ├── GSE164641/
-│ │ ├── figures/ # PCA, volcano plots, ROC curves, etc.
-│ │ └── tables/ # AUC summary, metric tables, DEG tables
-│ ├── GSE95640/
-│ └── GSE240671/
+│   ├── GSE164641/
+│   │   ├── figures/
+│   │   │   ├── pca_plot.png
+│   │   │   ├── volcano_plot.png
+│   │   │   └── roc_curves.png
+│   │   └── tables/
+│   │       ├── auc_summary.csv
+│   │       ├── macro_metrics.csv
+│   │       └── deg_table.csv
+│   ├── GSE95640/
+│   │   ├── figures/
+│   │   └── tables/
+│   └── GSE240671/
+│       ├── figures/
+│       └── tables/
 │
 └── src/
-├── data_utils.py # load & preprocess datasets
-├── feature_utils.py # DESeq2 filtering, clinical feature handling
-├── model_utils.py # TabTransformer model definition
-├── train_utils.py # training loops for CV
-├── evaluation_utils.py # metrics, ROC, AUC, CIs
-└── plot_utils.py # visualization utilities
-'''
+    ├── data_utils.py
+    ├── feature_utils.py
+    ├── model_utils.py
+    ├── train_utils.py
+    ├── evaluation_utils.py
+    └── plot_utils.py
+```
+
 ---
 
 ## Datasets Used
